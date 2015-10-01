@@ -1,25 +1,28 @@
 package legobase
 
+// Product is a common product model
 type Product struct {
-	Id          int    `json:"id"`
+	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Price       int    `json:"price"`
 	Category    string `json:"category"`
 }
 
+// Order incapsulates all information about user
 type Order struct {
-	Id        int        `json:"id"`
-	Name      string     `json:""`
+	ID        int        `json:"id"`
+	Name      string     `json:"name"`
 	Phone     string     `json:"phone"`
 	City      string     `json:"city"`
 	Address   string     `json:"address"`
-	LineItems []LineItem `json:"address"`
+	LineItems []LineItem `json:"line_items"`
 }
 
+// LineItem connects order with products
 type LineItem struct {
-	Id        int `json:"id"`
-	OrderId   int `json:"order_id"`
-	ProductId int `json:"product_id"`
+	ID        int `json:"id"`
+	OrderID   int `json:"order_id"`
+	ProductID int `json:"product_id"`
 	Count     int `json:"count"`
 }

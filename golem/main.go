@@ -3,10 +3,12 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	_ "github.com/lib/pq"
 	"github.com/yanzay/lego/legobase"
@@ -48,6 +50,13 @@ func (handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 }
 
 func saveOrder(order legobase.Order) error {
+	if len(order.LineItems) < 1 {
+		return errors.New("Order should contain at least one line item")
+	}
+	transaction, err := store.Begin()
+	if err != nil {
+		return err
+	}
 	resp, err := store.Exec(`INSERT INTO orders (name, city, address, phone) VALUES (?, ?, ?, ?)`,
 		order.Name, order.City, order.Address, order.Phone)
 	if err != nil {
@@ -57,9 +66,20 @@ func saveOrder(order legobase.Order) error {
 	if err != nil {
 		return err
 	}
-	store.Exec(`INSERT INTO line_items (order_id, product_id, count)`,
-		order.LineItems, id)
-	return nil
+	var values []interface{}
+	var templates []string
+	for _, item := range order.LineItems {
+		values = append(values, id, item.ProductID, item.Count)
+		templates = append(templates, "(?, ?, ?)")
+	}
+	template := strings.Join(templates, ", ")
+	query := fmt.Sprintf("INSERT INTO line_items (order_id, product_id, count) VALUES %s", template)
+	_, err = store.Exec(query, values...)
+	if err != nil {
+		return err
+	}
+	err = transaction.Commit()
+	return err
 }
 
 func main() {
