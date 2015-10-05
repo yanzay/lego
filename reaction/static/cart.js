@@ -1,12 +1,22 @@
-var Cart = React.createClass({
+window.Cart = React.createClass({
   render: function() {
-    var itemNodes = this.props.items.map(function(item, index){
-      return <CartItem
-        key={index}
-        name={item.name}
-        price={item.price}
-        count={item.count} />
-    });
+    var
+      itemNodes = [],
+      items = this.props.items,
+      totalPrice = 0;
+    for (var productId in items) {
+      totalPrice += items[productId].price * items[productId].count;
+      itemNodes.push(
+        <CartItem
+          key={productId}
+          productId={productId}
+          name={items[productId].name}
+          price={items[productId].price}
+          count={items[productId].count}
+          onChangeCount={this.props.onChangeCount}
+          onDelete={this.props.onDeleteItem} />
+      );
+    }
     return (
       <div className="row">
         <div className="panel panel-success">
@@ -16,7 +26,7 @@ var Cart = React.createClass({
               {itemNodes}
             </tbody>
           </table>
-          <div className="panel-footer">Всего: 1000 грн.</div>
+          <div className="panel-footer">Всего: {totalPrice} грн.</div>
         </div>
         <a href="javascript:void(0);" className="btn btn-primary">Оформить заказ</a>
       </div>
@@ -25,23 +35,36 @@ var Cart = React.createClass({
 });
 
 var CartItem = React.createClass({
+  handleChange: function(e) {
+    if (e.target.value > 0) {
+      this.props.onChangeCount(this.props.productId, e.target.value);
+    }
+  },
+  handleDelete: function(e) {
+    this.props.onDelete(this.props.productId);
+  },
   render: function() {
     return (
       <tr>
         <td>{this.props.name}</td>
         <td>
-            <input type="number" value={this.props.count} style={{width: 2 + 'em'}} />
+            <input type="number"
+              value={this.props.count}
+              style={{width: '2.5em'}}
+              onChange={this.handleChange} />
         </td>
-        <td>{this.props.price}</td>
-        <td><button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></td>
+        <td>{this.props.price * this.props.count} грн.</td>
+        <td>
+          <button
+            type="button"
+            className="close"
+            data-dismiss="alert"
+            aria-label="Close"
+            onClick={this.handleDelete}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </td>
       </tr>
     );
   }
 });
-
-window.items = [
-  {name: "Чай не скучай", price: "120", count: "1"},
-  {name: "Те Гуань Инь", price: "140", count: "2"}
-];
-
-React.render(<Cart items={window.items} />, document.getElementById("cart"))
