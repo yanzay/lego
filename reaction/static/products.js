@@ -41,6 +41,13 @@ var ProductCard = React.createClass({
             <h3>{this.props.name}</h3>
             <p>{this.props.price} грн.</p>
             <p>
+              <select>
+                <option value="50">50 г.</option>
+                <option value="100">100 г.</option>
+                <option value="200">200 г.</option>
+              </select>
+            </p>
+            <p>
               <a href="#" className="btn btn-success" onClick={this.handleAdd}>В корзину</a>
             </p>
           </div>
