@@ -50,7 +50,7 @@ func main() {
 }
 
 func (handler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
-	shop := req.URL.Query().Get("shop")
+	shop := req.Host
 	if shop == "" {
 		rw.WriteHeader(http.StatusNotFound)
 		return
