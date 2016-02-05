@@ -1,0 +1,30 @@
+nginx:
+  image: nginx
+  links:
+    - golly
+    - golem
+    - reaction
+postgres:
+  image: postgres
+  volumes:
+    - ./data:/var/lib/postgresql/data
+golly:
+  build: ./golly
+  environment:
+    DB: "postgres://postgres@postgres/postgres?sslmode=disable"
+  links:
+    - postgres
+    - redis
+golem:
+  build: ./golem
+  environment:
+    DB: "postgres://postgres@postgres/postgres?sslmode=disable"
+  links:
+    - postgres
+reaction:
+  image: yanzay/reaction
+  links:
+    - golly
+    - golem
+  ports:
+    - "4200:4200"

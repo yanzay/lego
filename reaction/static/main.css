@@ -1,0 +1,29 @@
+body {
+  padding-top: 50px;
+}
+
+.navbar-brand img {
+  height: 50px;
+  width: 50px;
+}
+
+#navigation .navlink:hover {
+  background: #dff0d8;
+}
+
+#menu a.active {
+  background: #0DFFCF;
+}
+
+#menu a:hover {
+  background: #0DFFCF;
+}
+
+#menubar {
+  background-color: #dff0d8;
+}
+
+#cart {
+  position: fixed;
+  right: 50px;
+}

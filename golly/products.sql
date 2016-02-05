@@ -13,6 +13,9 @@ CREATE INDEX ON products (shop);
 INSERT INTO products (shop, name, description, price, category)
 VALUES ('teaguild.com.ua', 'tea', 'some cool tea', 100, 'teas');
 
+INSERT INTO products (shop, name, description, price, category)
+VALUES ('teaguild.com.ua', 'coffee', 'some cool tea', 42, 'teas');
+
 CREATE TABLE orders (
   id SERIAL PRIMARY KEY,
   name text,

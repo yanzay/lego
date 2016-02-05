@@ -1,5 +1,5 @@
-from scratch
+from alpine
 
 COPY golly /
 
-CMD ["/golly"]
+CMD /golly -db $DB

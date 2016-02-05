@@ -9,7 +9,7 @@ type Product struct {
 	Category    string `json:"category"`
 }
 
-// Order incapsulates all information about user
+// Order incapsulates line items and user contact information
 type Order struct {
 	ID        int        `json:"id"`
 	Name      string     `json:"name"`
