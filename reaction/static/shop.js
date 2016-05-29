@@ -1,12 +1,17 @@
 import { Router, Route, Link, IndexRoute } from 'react-router'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { createStore } from 'redux'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 import Products from './products'
 import Navigation from './navigation'
 import Cart from './cart'
 import Menu from './menu'
 import { About, Delivery, Contacts } from './static'
+
+
+
+const store = createStore()
 
 class App extends React.Component {
   render() {
@@ -193,6 +198,7 @@ ReactDOM.render((
       <Route path="/about" component={ About } />
       <Route path="/delivery" component={ Delivery } />
       <Route path="/contacts" component={ Contacts } />
+      <Route path="/order" componen={ Order } />
       <Route path="/:category" component={ Shop } />
     </Route>
   </Router>
